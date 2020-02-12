@@ -202,6 +202,11 @@ jobs:
       run: bash setup-toolchain.sh
 
     # Run
+    - name: Set LD_LIBRARY_PATH (Linux)
+      run: |
+        SYSROOT=$(rustc --print sysroot)
+        echo "::set-env name=LD_LIBRARY_PATH::${SYSROOT}/lib${LD_LIBRARY_PATH+:${LD_LIBRARY_PATH}}"
+
     - name: Build Integration Test
       run: cargo test --test integration --features integration --no-run
 
@@ -291,6 +296,11 @@ jobs:
       run: chmod +x $CARGO_TARGET_DIR/debug/*
 
     # Run
+    - name: Set LD_LIBRARY_PATH (Linux)
+      run: |
+        SYSROOT=$(rustc --print sysroot)
+        echo "::set-env name=LD_LIBRARY_PATH::${SYSROOT}/lib${LD_LIBRARY_PATH+:${LD_LIBRARY_PATH}}"
+
     - name: Test ${{ matrix.integration }}
       run: $CARGO_TARGET_DIR/debug/integration
       env:
